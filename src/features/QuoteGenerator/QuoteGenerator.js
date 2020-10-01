@@ -1,18 +1,43 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { decrement, increment, incrementByAmount, incrementAsync, selectCount} from './counterSlice';
 import {setQuote, selectQuotes, selectAuthors} from './quoteGeneratorSlice'
 import styles from './Counter.module.css';
 
+function changeDisplay(){
+    const showQuote = document.getElementById('showQuote')
+    const addQuote = document.getElementById('addQuote')
+
+    if(showQuote.classList.contains('hide')){
+        showQuote.classList.remove('hide')
+        addQuote.classList.add('hide')
+    }
+    else if(addQuote.classList.contains('hide')){
+        addQuote.classList.remove('hide')
+        showQuote.classList.add('hide')
+    }
+}
+
 export function QuoteGenerator() {
     const dispatch = useDispatch();
-    // const count = useSelector(selectCount);
-    // const [incrementAmount, setIncrementAmount] = useState('1');
-
     const allQuotes = useSelector(selectQuotes);
     const allAuthors = useSelector(selectAuthors);
+    
     const [newQuote, setNewQuote] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
+
+    let n = Math.floor(Math.random()* allQuotes.length)
+    const [presentQuote, setPresentQuote] = useState( allQuotes[n]);
+    const [presentAuthor, setPresentAuthor] = useState(allQuotes[n]);
+
+    let loadRandomQuote = () => {
+        let n = Math.floor(Math.random()* allQuotes.length)
+        console.log(n)
+
+        setPresentQuote(allQuotes[n])
+        setPresentAuthor(allAuthors[n])
+
+        console.log(presentQuote)
+    }
 
     return (
         <div>
@@ -20,12 +45,12 @@ export function QuoteGenerator() {
                 <div id="showQuote" className={styles.box}>
                     <h3>Click on "New Quote"</h3>
                     <div id={styles.quote}>
-                        <p id="text">"Quote test"</p>
-                        <small id="author">Author test</small>  
+                        <p id="text">"{presentQuote}"</p>
+                        <small id="author">{presentAuthor}</small>  
                     </div>
                     
                     <div className={styles.buttons}>
-                        <button className={styles.button} id="new-quote">Change Quote</button>
+                        <button className={styles.button} id="new-quote" onClick={loadRandomQuote}>Change Quote</button>
 
                         <button className={styles.button}>Insert New Quote</button>
 
@@ -40,12 +65,18 @@ export function QuoteGenerator() {
                         <h3>Insert New Quote</h3>
                         <form>
                             <div id={styles.quote}>
-                                <input type='text' placeholder="Insert the Quote" name="quote" className={styles.input} value={newQuote} onChange={e => setNewQuote(e.target.value)}/>
-                                <input type='text' placeholder="Insert the Author" name="author" className={styles.input} value={newAuthor} onChange={e => setNewAuthor(e.target.value)}/>
+                                <input type='text' placeholder="Insert the Quote" name="quote" className={styles.input} value={newQuote} 
+                                    onChange={e => setNewQuote(e.target.value)}/>
+                                    
+                                <input type='text' placeholder="Insert the Author" name="author" className={styles.input} value={newAuthor} 
+                                    onChange={e => setNewAuthor(e.target.value)}/>
                             </div>
                             
                             <div className={styles.buttons}>
-                                 <button className={styles.button} onClick={(e) => {e.preventDefault(); dispatch(setQuote( {newQuote, newAuthor} )) }}>Insert</button> 
+                                 <button className={styles.button} 
+                                    onClick={(e) => {e.preventDefault(); dispatch(setQuote( {newQuote, newAuthor}))}}>
+                                    Insert
+                                </button> 
                                 <button className={styles.button}>Back</button>
                             </div>
                         </form>
