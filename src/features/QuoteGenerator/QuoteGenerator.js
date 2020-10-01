@@ -24,6 +24,15 @@ function changeDisplay(){
     }
 }
 
+function cleanInputs(){
+    let inputs = document.querySelectorAll('#addQuote form input')
+    console.log(inputs)
+    for (let i = 0; i < inputs.length; i++) {
+        console.log(inputs[i].value)
+        inputs[i].value = ''
+    }
+}
+
 export function QuoteGenerator() {
     const dispatch = useDispatch();
     const allQuotes = useSelector(selectQuotes);
@@ -53,12 +62,7 @@ export function QuoteGenerator() {
                 
                 <div className={styles.buttons}>
                     <button className={styles.button} id="new-quote" onClick={loadRandomQuote}>Change Quote</button>
-
                     <button className={styles.button} onClick={changeDisplay}>Insert New Quote</button>
-
-                    <a href="/twitter.com/intent/tweet" className={styles.button} id="tweet-quote" target="_blank">
-                    Tweet Quote
-                    </a>
                 </div>
             </div>
 
@@ -67,16 +71,20 @@ export function QuoteGenerator() {
                     <h3>Insert New Quote</h3>
                     <form>
                         <div id={styles.quote}>
-                            <input type='text' placeholder="Insert the Quote" name="quote" className={styles.input} value={newQuote} 
+                            <input type='text' placeholder="Insert the Quote" name="quote" className={styles.input} 
                                 onChange={e => setNewQuote(e.target.value)}/>
 
-                            <input type='text' placeholder="Insert the Author" name="author" className={styles.input} value={newAuthor} 
+                            <input type='text' placeholder="Insert the Author" name="author" className={styles.input} 
                                 onChange={e => setNewAuthor(e.target.value)}/>
                         </div>
                         
                         <div className={styles.buttons}>
                             <button className={styles.button} 
-                                onClick={(e) => {e.preventDefault(); dispatch(setQuote( {newQuote, newAuthor}))}}>
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    dispatch(setQuote( {newQuote, newAuthor}))
+                                    cleanInputs()
+                                }}>
                                 Insert
                             </button>
                         </div>
