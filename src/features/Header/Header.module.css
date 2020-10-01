@@ -1,0 +1,10 @@
+.headerBox{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    display: block;
+    width: 100%;
+}
+
+.headerBox h1{
+    margin: 16px 0;
+}
