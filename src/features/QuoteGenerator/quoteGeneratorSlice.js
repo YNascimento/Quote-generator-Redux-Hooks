@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const quoteSlice = createSlice({
     name: 'quotes',
     initialState: {
-        allQuotes: ['quote1', 'quote2'],
-        allAuthors: ['author1','author2'],
+        allQuotes: ['Quote1', 'Quote2', 'Quote3'],
+        allAuthors: ['Author1','Author2','Author3'],
     },
     reducers: {
         setQuote: (state, action) => {
